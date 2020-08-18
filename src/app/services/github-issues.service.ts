@@ -16,6 +16,7 @@ export class GithubIssuesService {
     // Converts an object as a query string by mapping the value and the key, then with the new
     // array returned joins them with an &
     let queryString = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+    // Due that the api you suggest wasn't available a search filter, I look up for another one 
     return this.httpClient.get(`https://api.github.com/search/issues?${queryString}`).toPromise();
   }
 
