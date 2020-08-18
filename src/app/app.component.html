@@ -1,0 +1,65 @@
+<section class="sectionGithub">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="title">Github - Issues</h1>
+                <form [formGroup]="searchForm">
+                    <div class="forma-input">      
+                        <div>
+                            <label for="search">Search:</label>       
+                            <input type="text" name="search" class="search" formControlName="search">
+                        </div>
+                        <div class="errors" *ngIf="getterForm.search.errors">
+                            <em *ngIf="getterForm.search.errors.minlength">Type at least 3 characters</em>
+                        </div>
+                    </div>
+                    <div class="forma-input">   
+                        <div>                               
+                            <label for="perPage">Number of pages: </label>                 
+                            <select name="perPage" formControlName="perPage">
+                                <option *ngFor="let length of pageLength" [value]="length" [selected]="pageLength[0]">{{length}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12">
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Labels</th>
+                    </tr>
+                    <tr *ngFor="let issue of listIssues">
+                        <td>{{issue.title }}</td>
+                        <td>
+                            <span class="badge badge-success ml-1 mr-1" *ngFor="let label of issue.labels">{{label['name']}}</span>
+                        </td>
+                    </tr>
+                    <tr class="no-results">
+                        <td colspan="2" *ngIf="isLoading"><img src="../assets/imgs/loading.svg" height="50px">Loading...</td>
+                        <td colspan="2" *ngIf="listIssues.length == 0 && !isLoading">No results</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <span class="numberItems">Total issues: <b>{{totalIssues}}</b></span>
+            </div>
+            <div class="col-6">
+                <div class="showPage">
+                    Show page:&nbsp;<input type="number" name="currentPage" (input)="getIssuesList()"
+                    [(ngModel)]="currentPage" required min="0" [max]="numberOfPages"> of {{numberOfPages}}
+                </div>
+                <em *ngIf="listIssues.length> 0 && currentPage > numberOfPages">The current page is greater that the total of page.</em>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="toast-error" *ngIf=" errorMessage.length > 0">
+                    {{errorMessage}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
